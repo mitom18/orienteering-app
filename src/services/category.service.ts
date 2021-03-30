@@ -3,6 +3,7 @@ export interface Category {
     minAge?: number;
     maxAge?: number;
     sitesCount: number;
+    mapPath: string;
 }
 
 const categories: Category[] = [
@@ -11,18 +12,21 @@ const categories: Category[] = [
         minAge: undefined,
         maxAge: 10,
         sitesCount: 8,
+        mapPath: "/maps/u10.png",
     },
     {
         name: "pod 15 let",
         minAge: 11,
         maxAge: 15,
         sitesCount: 12,
+        mapPath: "/maps/u15.png",
     },
     {
         name: "nad 16 let",
         minAge: 16,
         maxAge: undefined,
         sitesCount: 16,
+        mapPath: "/maps/a16.png",
     },
 ];
 
