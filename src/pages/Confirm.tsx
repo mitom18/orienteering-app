@@ -8,7 +8,13 @@ import {
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import Header from "../components/Header";
-import { solutionService, User, userService } from "../services";
+import {
+    Category,
+    categoryService,
+    solutionService,
+    User,
+    userService,
+} from "../services";
 
 const useStyles = makeStyles((theme) => {
     return {
@@ -24,7 +30,8 @@ const useStyles = makeStyles((theme) => {
 });
 
 const Confirm: React.FC = () => {
-    const [user, setUser] = useState({} as User);
+    const [user, setUser] = useState<User | null>(null);
+    const [category, setCategory] = useState<Category | null>(null);
     const history = useHistory();
     const classes = useStyles();
 
@@ -35,6 +42,7 @@ const Confirm: React.FC = () => {
             return;
         }
         setUser(savedUser);
+        setCategory(categoryService.getCategory(savedUser.age));
     }, [history]);
 
     const handleBack = () => {
@@ -51,17 +59,17 @@ const Confirm: React.FC = () => {
             <Header />
             <Container component="main" maxWidth="sm">
                 <Paper className={classes.mainWrapper}>
-                    <Typography paragraph={true}>
+                    <Typography variant="subtitle1" gutterBottom>
                         {user
-                            ? `Jste přihlášeni jako ${user.name} (${user.email})`
+                            ? `Jste přihlášeni jako ${user.name} (${user.email}).`
                             : "Nejste přihlášeni."}
                     </Typography>
-                    {user && (
+                    {user && category && (
                         <Typography paragraph={true}>
                             Vyplnili jste věk {user.age}, tedy spadáte do
-                            kategorie XX. Tato kategorie musí během našeho
-                            orienťáku navštívit XX stanovišť. Jste připraveni
-                            začít?
+                            kategorie {category.name}. Tato kategorie musí během
+                            našeho orienťáku navštívit {category.sitesCount}{" "}
+                            stanovišť. Jste připraveni začít?
                         </Typography>
                     )}
                     <div className={classes.buttons}>

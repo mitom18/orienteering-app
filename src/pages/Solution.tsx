@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme) => {
 });
 
 const Solution: React.FC = () => {
-    const [user, setUser] = useState({} as User);
+    const [user, setUser] = useState<User | null>(null);
     const [siteNames, setSiteNames] = useState([] as string[]);
     const [sites, setSites] = useState({} as Site);
     const history = useHistory();
@@ -65,8 +65,10 @@ const Solution: React.FC = () => {
     }, [history]);
 
     useEffect(() => {
-        const category = categoryService.getCategory(user.age);
-        setSiteNames(category ? categoryService.getSiteNames(category) : []);
+        if (user) {
+            const category = categoryService.getCategory(user.age);
+            setSiteNames(categoryService.getSiteNames(category));
+        }
     }, [user]);
 
     const getStart = (): Date | null => {
@@ -92,7 +94,7 @@ const Solution: React.FC = () => {
             end,
             length: end.getTime() - start.getTime(),
         });
-        // TODO save solution to the server
+        // TODO save solution to the server with the user info
         history.push("/result");
     };
 
@@ -103,10 +105,12 @@ const Solution: React.FC = () => {
         }
         const end = new Date();
 
+        if (!user) {
+            return;
+        }
+
         const category = categoryService.getCategory(user.age);
-        const expectedSites = category
-            ? categoryService.getSiteNames(category)
-            : [];
+        const expectedSites = categoryService.getSiteNames(category);
         const missingSitesCount =
             expectedSites.length - Object.keys(sites).length;
         if (missingSitesCount) {

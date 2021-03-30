@@ -1,4 +1,4 @@
-interface Category {
+export interface Category {
     name: string;
     minAge?: number;
     maxAge?: number;
@@ -39,7 +39,7 @@ const getCategory = (age: number) => {
                 c.maxAge !== undefined &&
                 c.maxAge >= age &&
                 c.minAge <= age)
-    );
+    ) as Category;
 };
 
 const getSiteNames = (category: Category) => {
