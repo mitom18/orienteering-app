@@ -2,6 +2,11 @@ import {
     AppBar,
     Button,
     Container,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
     makeStyles,
     Paper,
     TextField,
@@ -17,7 +22,6 @@ import {
     User,
     userService,
 } from "../services";
-import "react-confirm-alert/src/react-confirm-alert.css";
 import Timer from "../components/Timer";
 import BottomNav from "../components/BottomNav";
 
@@ -62,6 +66,12 @@ const Solution: React.FC = () => {
             return;
         }
         setUser(savedUser);
+
+        const solution = solutionService.getSolution();
+        if (solution === null || solution.end !== undefined) {
+            history.push("/");
+            return;
+        }
     }, [history]);
 
     useEffect(() => {
@@ -114,21 +124,39 @@ const Solution: React.FC = () => {
         const missingSitesCount =
             expectedSites.length - Object.keys(sites).length;
         if (missingSitesCount) {
-            // TODO change confirm styles from default to custom
             confirmAlert({
-                title: "Opravdu?",
-                message: `Nevyplnili jste ${missingSitesCount} stanovišť. Přesto chcete odeslat formulář?`,
-                buttons: [
-                    {
-                        label: "Ano",
-                        onClick: () => handleOnSuccess(start, end),
-                    },
-                    {
-                        label: "Ne",
-                        onClick: () => {},
-                    },
-                ],
-                closeOnClickOutside: false,
+                customUI: ({ onClose }) => (
+                    <Dialog
+                        open={true}
+                        onClose={onClose}
+                        aria-labelledby="alert-dialog-title"
+                        aria-describedby="alert-dialog-description"
+                    >
+                        <DialogTitle id="alert-dialog-title">
+                            {"Opravdu?"}
+                        </DialogTitle>
+                        <DialogContent>
+                            <DialogContentText id="alert-dialog-description">
+                                Nevyplnili jste {missingSitesCount} stanovišť.
+                                Přesto chcete odeslat formulář?
+                            </DialogContentText>
+                        </DialogContent>
+                        <DialogActions>
+                            <Button
+                                onClick={() => {
+                                    onClose();
+                                    handleOnSuccess(start, end);
+                                }}
+                                color="primary"
+                            >
+                                Ano
+                            </Button>
+                            <Button onClick={onClose} color="primary" autoFocus>
+                                Ne
+                            </Button>
+                        </DialogActions>
+                    </Dialog>
+                ),
             });
         }
     };
