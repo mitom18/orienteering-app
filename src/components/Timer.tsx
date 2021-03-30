@@ -3,7 +3,7 @@ import AccessTimeIcon from "@material-ui/icons/AccessTime";
 import { makeStyles, Typography } from "@material-ui/core";
 
 interface Props {
-    start: number;
+    start: Date;
 }
 
 const useStyles = makeStyles({
@@ -18,7 +18,7 @@ const Timer: React.FC<Props> = ({ start }) => {
     const classes = useStyles();
 
     const tick = useCallback(() => {
-        const milliseconds = Date.now() - start;
+        const milliseconds = Date.now() - start.getTime();
         const dateObj = new Date(milliseconds);
         const hours = dateObj.getUTCHours();
         const minutes = ("0" + dateObj.getUTCMinutes()).slice(-2);

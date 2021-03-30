@@ -10,15 +10,17 @@ import { useHistory } from "react-router";
 import Header from "../components/Header";
 import { solutionService, User, userService } from "../services";
 
-const useStyles = makeStyles({
-    mainWrapper: {
-        padding: 16,
-        marginBottom: 12,
-    },
-    buttons: {
-        display: "flex",
-        justifyContent: "space-between",
-    },
+const useStyles = makeStyles((theme) => {
+    return {
+        mainWrapper: {
+            padding: theme.spacing(2),
+            marginBottom: theme.spacing(1),
+        },
+        buttons: {
+            display: "flex",
+            justifyContent: "space-between",
+        },
+    };
 });
 
 const Confirm: React.FC = () => {
@@ -40,7 +42,7 @@ const Confirm: React.FC = () => {
     };
 
     const handleStart = () => {
-        solutionService.saveSolution({ start: Date.now() });
+        solutionService.saveSolution({ start: new Date() });
         history.push("/solution");
     };
 

@@ -69,13 +69,13 @@ const Solution: React.FC = () => {
         setSiteNames(category ? categoryService.getSiteNames(category) : []);
     }, [user]);
 
-    const getStart = (): number | null => {
+    const getStart = (): Date | null => {
         const solution = solutionService.getSolution();
         if (solution === null || solution.start === undefined) {
             history.push("/");
             return null;
         }
-        return solution.start as number;
+        return new Date(solution.start);
     };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -85,12 +85,12 @@ const Solution: React.FC = () => {
         setSites(sites);
     };
 
-    const handleOnSuccess = (start: number, end: number) => {
+    const handleOnSuccess = (start: Date, end: Date) => {
         solutionService.saveSolution({
             ...sites,
             start,
             end,
-            length: end - start,
+            length: end.getTime() - start.getTime(),
         });
         // TODO save solution to the server
         history.push("/result");
@@ -101,7 +101,7 @@ const Solution: React.FC = () => {
         if (!start) {
             return;
         }
-        const end = Date.now();
+        const end = new Date();
 
         const category = categoryService.getCategory(user.age);
         const expectedSites = category
@@ -138,7 +138,7 @@ const Solution: React.FC = () => {
                             variant="h6"
                             className={classes.titleTopAppBar}
                         >
-                            <Timer start={getStart() || Date.now()} />
+                            <Timer start={getStart() || new Date()} />
                         </Typography>
                         <Button color="inherit" onClick={handleSubmit}>
                             Odeslat

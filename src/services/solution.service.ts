@@ -1,7 +1,7 @@
 import { LocalStorageKeys } from "../utils";
 
 export interface Solution {
-    [key: string]: string | number | undefined;
+    [key: string]: string | Date | number | undefined;
 }
 
 const saveSolution = (solution: Solution) => {
