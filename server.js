@@ -25,6 +25,9 @@ server.use((req, res, next) => {
     }
 });
 server.use("/api", router);
+server.get("/service-worker.js", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "build", "service-worker.js"));
+});
 server.get("/*", (req, res) => {
     res.sendFile(path.join(__dirname, "build", "index.html"));
 });

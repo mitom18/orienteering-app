@@ -107,9 +107,6 @@ const Solution: React.FC = () => {
             const { name, value } = e.target;
             sites[name] = parseInt(value);
             setSites(sites);
-
-            console.log(sites);
-
             solutionService.saveSolution({
                 start: getStart() || new Date(),
                 sites: sites || undefined,
