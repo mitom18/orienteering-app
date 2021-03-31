@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => {
         },
         buttons: {
             display: "flex",
-            justifyContent: "space-between",
+            justifyContent: "center",
             marginTop: theme.spacing(2),
         },
     };
@@ -56,9 +56,13 @@ const Result: React.FC = () => {
     return (
         <>
             <Header />
-            {position && solution && solution.length && (
+            {position && solution && solution.length && solution.sites && (
                 <Container component="main" maxWidth="sm">
                     <Paper className={classes.wrapper}>
+                        <Typography paragraph={true} align="center">
+                            Počet vyplněných stanovišť:{" "}
+                            {Object.keys(solution.sites).length}.
+                        </Typography>
                         <Typography variant="h5" align="center">
                             S časem
                         </Typography>
@@ -71,7 +75,7 @@ const Result: React.FC = () => {
                         <Typography variant="h2" align="center">
                             {position}.
                         </Typography>
-                        <Typography variant="h5" align="center" gutterBottom>
+                        <Typography variant="h5" align="center">
                             místě, gratulujeme!
                         </Typography>
                         <div className={classes.buttons}>

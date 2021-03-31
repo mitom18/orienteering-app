@@ -25,7 +25,7 @@ const useStyles = makeStyles((theme) => {
         },
         buttons: {
             display: "flex",
-            justifyContent: "space-between",
+            justifyContent: "center",
             marginTop: theme.spacing(2),
         },
     };
