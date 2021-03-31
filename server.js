@@ -1,7 +1,12 @@
+const fs = require("fs");
 const path = require("path");
 const jsonServer = require("json-server");
+const dbFilePath = path.join(__dirname, "data/db.json");
+if (!fs.existsSync(dbFilePath)) {
+    fs.writeFileSync(dbFilePath, JSON.stringify({ answers: [] }));
+}
 const server = jsonServer.create();
-const router = jsonServer.router(path.join(__dirname, "data/db.json"));
+const router = jsonServer.router(dbFilePath);
 const middleware = jsonServer.defaults({
     static: path.join(__dirname, "build"),
 });
