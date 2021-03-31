@@ -61,7 +61,7 @@ const Feedback: React.FC = () => {
         if (user && solution) {
             await apiService.save(user, solution, feedback);
         }
-        history.push("/");
+        history.push("/result");
     };
 
     return (

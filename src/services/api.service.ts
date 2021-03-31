@@ -16,6 +16,9 @@ const save = async (user: User, solution: Solution, notes: string) => {
     };
     const response = await fetch("/api/answers", {
         method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
         body: JSON.stringify(data),
     });
     const savedData = (await response.json()) as ApiData;
@@ -42,10 +45,12 @@ const getMyPosition = async () => {
         const aFilled = Object.values(aSites).reduce(reducer, 0);
         const bFilled = Object.values(bSites).reduce(reducer, 0);
         if (aFilled !== bFilled) {
-            return aFilled - bFilled;
+            // descending order, more filled, better position
+            return bFilled - aFilled;
         }
         const aLength = a.solution.length as number;
         const bLength = b.solution.length as number;
+        // ascending order, less time, better position
         return aLength - bLength;
     });
 

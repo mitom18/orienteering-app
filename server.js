@@ -1,7 +1,11 @@
 const fs = require("fs");
 const path = require("path");
 const jsonServer = require("json-server");
-const dbFilePath = path.join(__dirname, "data/db.json");
+const dbFolderPath = path.join(__dirname, "data");
+const dbFilePath = path.join(dbFolderPath, "db.json");
+if (!fs.existsSync(dbFolderPath)) {
+    fs.mkdirSync(dbFolderPath);
+}
 if (!fs.existsSync(dbFilePath)) {
     fs.writeFileSync(dbFilePath, JSON.stringify({ answers: [] }));
 }
