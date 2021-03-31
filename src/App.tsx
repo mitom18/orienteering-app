@@ -3,6 +3,7 @@ import { deepOrange, orange } from "@material-ui/core/colors";
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Confirm from "./pages/Confirm";
+import Feedback from "./pages/Feedback";
 import Homepage from "./pages/Homepage";
 import MapPage from "./pages/MapPage";
 import Result from "./pages/Result";
@@ -28,6 +29,9 @@ const App: React.FC = () => {
                     </Route>
                     <Route exact path="/solution">
                         <Solution />
+                    </Route>
+                    <Route exact path="/feedback">
+                        <Feedback />
                     </Route>
                     <Route exact path="/result">
                         <Result />

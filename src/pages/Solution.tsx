@@ -18,16 +18,13 @@ import { confirmAlert } from "react-confirm-alert";
 import { useHistory } from "react-router-dom";
 import {
     categoryService,
+    Sites,
     solutionService,
     User,
     userService,
 } from "../services";
 import Timer from "../components/Timer";
 import BottomNav from "../components/BottomNav";
-
-type Site = {
-    [key: string]: number | undefined;
-};
 
 const useStyles = makeStyles((theme) => {
     return {
@@ -55,7 +52,7 @@ const useStyles = makeStyles((theme) => {
 const Solution: React.FC = () => {
     const [user, setUser] = useState<User | null>(null);
     const [siteNames, setSiteNames] = useState([] as string[]);
-    const [sites, setSites] = useState({} as Site);
+    const [sites, setSites] = useState<Sites | null>(null);
     const history = useHistory();
     const classes = useStyles();
 
@@ -77,9 +74,23 @@ const Solution: React.FC = () => {
     useEffect(() => {
         if (user) {
             const category = categoryService.getCategory(user.age);
-            setSiteNames(categoryService.getSiteNames(category));
+            const siteNames = categoryService.getSiteNames(category);
+            const solution = solutionService.getSolution();
+            const savedSites = (solution && solution.sites) || {};
+            setSiteNames(siteNames);
+            setSites(
+                siteNames
+                    .map((s) => {
+                        return { [s]: savedSites[s] || undefined };
+                    })
+                    .reduce((res, cur) => {
+                        return Object.assign(res, cur);
+                    }, {})
+            );
         }
     }, [user]);
+
+    useEffect(() => {}, [siteNames]);
 
     const getStart = (): Date | null => {
         const solution = solutionService.getSolution();
@@ -92,20 +103,28 @@ const Solution: React.FC = () => {
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         e.persist();
-        const { name, value } = e.target;
-        sites[name] = parseInt(value);
-        setSites(sites);
+        if (sites) {
+            const { name, value } = e.target;
+            sites[name] = parseInt(value);
+            setSites(sites);
+
+            console.log(sites);
+
+            solutionService.saveSolution({
+                start: getStart() || new Date(),
+                sites: sites || undefined,
+            });
+        }
     };
 
     const handleOnSuccess = (start: Date, end: Date) => {
         solutionService.saveSolution({
-            ...sites,
             start,
             end,
             length: end.getTime() - start.getTime(),
+            sites: sites || undefined,
         });
-        // TODO save solution to the server with the user info
-        history.push("/result");
+        history.push("/feedback");
     };
 
     const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -115,14 +134,14 @@ const Solution: React.FC = () => {
         }
         const end = new Date();
 
-        if (!user) {
+        if (!user || !sites) {
             return;
         }
 
         const category = categoryService.getCategory(user.age);
         const expectedSites = categoryService.getSiteNames(category);
-        const missingSitesCount =
-            expectedSites.length - Object.keys(sites).length;
+        const filledSites = Object.values(sites).filter((i) => i !== undefined);
+        const missingSitesCount = expectedSites.length - filledSites.length;
         if (missingSitesCount) {
             confirmAlert({
                 customUI: ({ onClose }) => (
@@ -158,6 +177,8 @@ const Solution: React.FC = () => {
                     </Dialog>
                 ),
             });
+        } else {
+            handleOnSuccess(start, end);
         }
     };
 
@@ -181,20 +202,22 @@ const Solution: React.FC = () => {
             <Container component="main" maxWidth="sm">
                 <Paper className={classes.mainWrapper}>
                     <form noValidate autoComplete="off">
-                        {siteNames.map((name) => (
-                            <TextField
-                                key={name}
-                                className={classes.field}
-                                variant="outlined"
-                                margin="none"
-                                fullWidth
-                                id={name}
-                                name={name}
-                                label={name}
-                                type="number"
-                                onChange={handleChange}
-                            />
-                        ))}
+                        {sites &&
+                            Object.keys(sites).map((name) => (
+                                <TextField
+                                    key={name}
+                                    value={sites[name]}
+                                    className={classes.field}
+                                    variant="outlined"
+                                    margin="none"
+                                    fullWidth
+                                    id={name}
+                                    name={name}
+                                    label={name}
+                                    type="number"
+                                    onChange={handleChange}
+                                />
+                            ))}
                     </form>
                 </Paper>
             </Container>

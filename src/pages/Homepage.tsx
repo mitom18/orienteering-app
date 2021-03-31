@@ -9,7 +9,7 @@ import {
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import Header from "../components/Header";
-import { solutionService, userService } from "../services";
+import { apiService, solutionService, userService } from "../services";
 
 interface FormData {
     name: string;
@@ -57,6 +57,7 @@ const Homepage: React.FC = () => {
             setValues({ ...savedUser, submitted: false });
         }
         solutionService.clearSolution();
+        apiService.clearApiId();
     }, []);
 
     const validateForm = () => {
