@@ -49,6 +49,14 @@ server.post("/api/answers", async function (req, res) {
     }
 });
 
+server.get("/service-worker.js", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "build", "service-worker.js"));
+});
+
+server.get("/*", (req, res) => {
+    res.sendFile(path.join(__dirname, "build", "index.html"));
+});
+
 server.listen(port, () => {
     console.log("Server is running");
 });
