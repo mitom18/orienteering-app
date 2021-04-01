@@ -2,7 +2,7 @@ import { Sites, Solution, User } from ".";
 import { LocalStorageKeys } from "../utils";
 
 interface ApiData {
-    id?: number;
+    _id?: string;
     user: User;
     solution: Solution;
     notes: string;
@@ -22,10 +22,7 @@ const save = async (user: User, solution: Solution, notes: string) => {
         body: JSON.stringify(data),
     });
     const savedData = (await response.json()) as ApiData;
-    localStorage.setItem(
-        LocalStorageKeys.API_ID,
-        (savedData.id as number).toString()
-    );
+    localStorage.setItem(LocalStorageKeys.API_ID, savedData._id as string);
 };
 
 const getMyPosition = async () => {
@@ -35,7 +32,6 @@ const getMyPosition = async () => {
     if (id === null) {
         throw new Error("No API id found in local storage");
     }
-    const intId = parseInt(id);
     const reducer = (res: number, cur: number | undefined) => {
         return cur !== undefined ? res + 1 : res;
     };
@@ -54,7 +50,7 @@ const getMyPosition = async () => {
         return aLength - bLength;
     });
 
-    return data.findIndex((i) => i.id === intId) + 1;
+    return data.findIndex((i) => i._id === id) + 1;
 };
 
 const getApiId = (): number | null => {
