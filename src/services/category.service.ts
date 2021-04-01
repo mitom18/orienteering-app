@@ -15,14 +15,14 @@ const categories: Category[] = [
         mapPath: "/maps/u10.png",
     },
     {
-        name: "pod 15 let",
+        name: "11 až 15 let",
         minAge: 11,
         maxAge: 15,
         sitesCount: 12,
         mapPath: "/maps/u15.png",
     },
     {
-        name: "nad 16 let",
+        name: "nad 15 let",
         minAge: 16,
         maxAge: undefined,
         sitesCount: 16,

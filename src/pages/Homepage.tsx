@@ -31,9 +31,6 @@ const useStyles = makeStyles((theme) => {
             padding: theme.spacing(2),
             marginBottom: theme.spacing(1),
         },
-        emailInfo: {
-            fontSize: "0.85rem",
-        },
         submitBtn: {
             marginTop: theme.spacing(2),
         },
@@ -128,11 +125,10 @@ const Homepage: React.FC = () => {
             >
                 <Paper className={classes.formWrapper}>
                     <Typography align="left" paragraph={true}>
-                        Vítáme Vás Lorem ipsum dolor sit amet, consectetur
-                        adipisicing elit. Voluptas obcaecati possimus quis ullam
-                        corporis. Qui nobis similique repudiandae expedita
-                        nostrum maiores tempore delectus voluptas perspiciatis
-                        dolorum eos ab, odio iste?
+                        Vítáme Vás u Supího orienťáku! Vyplňte prosím
+                        následující pole, abychom Vás mohli zařadit do správné
+                        kategorie. Vaši e-mailovou adresu potřebujeme kvůli
+                        závěrečnému vyhodnocení.
                     </Typography>
                     <form noValidate autoComplete="off" onSubmit={handleSubmit}>
                         <TextField
@@ -168,16 +164,6 @@ const Homepage: React.FC = () => {
                             helperText={errors.age}
                             onChange={handleChange}
                         />
-                        <Typography
-                            className={classes.emailInfo}
-                            align="left"
-                            color="textSecondary"
-                        >
-                            Lorem ipsum dolor sit amet consectetur adipisicing
-                            elit. Perferendis dolore modi obcaecati velit quis
-                            nulla esse! Tempora sint nesciunt id fuga ex ea, at
-                            enim officiis tenetur totam necessitatibus veniam.
-                        </Typography>
                         <TextField
                             variant="outlined"
                             margin="normal"

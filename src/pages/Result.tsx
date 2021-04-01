@@ -38,12 +38,13 @@ const Result: React.FC = () => {
 
     useEffect(() => {
         const solution = solutionService.getSolution();
-        if (solution === null) {
+        const user = userService.getUser();
+        if (user === null || solution === null) {
             history.push("/");
             return;
         }
         setSolution(solution);
-        apiService.getMyPosition().then((p) => {
+        apiService.getMyPosition(user).then((p) => {
             setPosition(p);
         });
     }, [history]);

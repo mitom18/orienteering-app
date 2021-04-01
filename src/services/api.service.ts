@@ -1,4 +1,4 @@
-import { Sites, Solution, User } from ".";
+import { categoryService, Sites, Solution, User } from ".";
 import { LocalStorageKeys } from "../utils";
 
 interface ApiData {
@@ -25,13 +25,18 @@ const save = async (user: User, solution: Solution, notes: string) => {
     localStorage.setItem(LocalStorageKeys.API_ID, savedData._id as string);
 };
 
-const getMyPosition = async () => {
+const getMyPosition = async (user: User) => {
     const response = await fetch("/api/answers");
-    const data: ApiData[] = await response.json();
+    let data: ApiData[] = await response.json();
     const id = localStorage.getItem(LocalStorageKeys.API_ID);
     if (id === null) {
         throw new Error("No API id found in local storage");
     }
+    data = data.filter(
+        (i) =>
+            categoryService.getCategory(i.user.age) ===
+            categoryService.getCategory(user.age)
+    );
     const reducer = (res: number, cur: number | undefined) => {
         return cur !== undefined ? res + 1 : res;
     };

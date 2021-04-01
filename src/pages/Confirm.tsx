@@ -67,9 +67,14 @@ const Confirm: React.FC = () => {
                     {user && category && (
                         <Typography paragraph={true}>
                             Vyplnili jste věk {user.age}, tedy spadáte do
-                            kategorie {category.name}. Tato kategorie musí během
-                            našeho orienťáku navštívit {category.sitesCount}{" "}
-                            stanovišť. Jste připraveni začít?
+                            kategorie {category.name}. Musíte vyplnit číselné
+                            kódy z {category.sitesCount} stanovišť. Stanoviště
+                            jsou zakreslena v mapě, na kterou můžete překliknout
+                            v dolní části obrazovky. Stanoviště můžete oběhnout
+                            v JAKÉMKOLIV pořadí. Až budete mít vyplněné všechny
+                            kódy, klikněte na tlačítko odeslat. Vaším cílem je
+                            zvládnout to v co nejkratším čase. Jste připraveni
+                            začít?
                         </Typography>
                     )}
                     <div className={classes.buttons}>

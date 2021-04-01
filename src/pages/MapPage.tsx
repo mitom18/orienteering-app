@@ -9,7 +9,16 @@ import {
     categoryService,
 } from "../services";
 
-const useStyles = makeStyles({});
+const useStyles = makeStyles((theme) => {
+    return {
+        wrapper: {
+            maxWidth: "100%",
+            overflow: "auto",
+            textAlign: "center",
+            marginBottom: theme.spacing(6),
+        },
+    };
+});
 
 const MapPage: React.FC = () => {
     const [category, setCategory] = useState<Category | null>(null);
@@ -34,7 +43,11 @@ const MapPage: React.FC = () => {
 
     return (
         <>
-            <p>{category && category.mapPath}</p>
+            <main className={classes.wrapper}>
+                {category && category.mapPath && (
+                    <img src={category.mapPath} alt="Mapa" />
+                )}
+            </main>
             <BottomNav />
         </>
     );
