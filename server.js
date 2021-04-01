@@ -7,9 +7,9 @@ const express = require("express");
 const { MongoClient } = require("mongodb");
 
 const server = express();
+server.use(sslRedirect());
 server.use(express.static(path.join(__dirname, "build")));
 server.use(express.json());
-server.use(sslRedirect());
 const port = Number(process.env.PORT || 3000);
 const mongoDbUri = process.env.MONGODB_URI;
 
