@@ -2,12 +2,14 @@ const path = require("path");
 if (process.env.NODE_ENV !== "production") {
     require("dotenv").config({ path: path.join(__dirname, ".env.local") });
 }
+const sslRedirect = require("heroku-ssl-redirect").default;
 const express = require("express");
 const { MongoClient } = require("mongodb");
 
 const server = express();
 server.use(express.static(path.join(__dirname, "build")));
 server.use(express.json());
+server.use(sslRedirect());
 const port = Number(process.env.PORT || 3000);
 const mongoDbUri = process.env.MONGODB_URI;
 
