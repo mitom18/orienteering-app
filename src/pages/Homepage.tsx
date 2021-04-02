@@ -14,6 +14,7 @@ import { apiService, solutionService, userService } from "../services";
 interface FormData {
     name: string;
     age: number | string;
+    attempt: number | string;
     email: string;
     submitted: boolean;
 }
@@ -31,6 +32,13 @@ const useStyles = makeStyles((theme) => {
             padding: theme.spacing(2),
             marginBottom: theme.spacing(1),
         },
+        mapWrapper: {
+            marginTop: theme.spacing(2),
+            textAlign: "center",
+        },
+        mapStart: {
+            maxWidth: "100%",
+        },
         submitBtn: {
             marginTop: theme.spacing(2),
         },
@@ -41,6 +49,7 @@ const Homepage: React.FC = () => {
     const [values, setValues] = useState({
         name: "",
         age: "",
+        attempt: "",
         email: "",
         submitted: false,
     } as FormData);
@@ -69,6 +78,11 @@ const Homepage: React.FC = () => {
         if (!values.age) {
             isValid = false;
             errors.age = "Vyplňte prosím svůj věk.";
+        }
+
+        if (!values.attempt) {
+            isValid = false;
+            errors.attempt = "Vyplňte prosím číslo svého pokusu.";
         }
 
         if (!values.email) {
@@ -105,10 +119,11 @@ const Homepage: React.FC = () => {
             submitted: true,
         }));
         if (validateForm()) {
-            const { name, age, email } = values;
+            const { name, age, attempt, email } = values;
             userService.saveUser({
                 name,
                 age: age as number,
+                attempt: attempt as number,
                 email,
             });
             history.push("/confirm");
@@ -167,6 +182,26 @@ const Homepage: React.FC = () => {
                         <TextField
                             variant="outlined"
                             margin="normal"
+                            value={values.attempt}
+                            fullWidth
+                            name="attempt"
+                            label="Číslo pokusu"
+                            type="number"
+                            InputProps={{
+                                inputProps: {
+                                    min: 0,
+                                },
+                            }}
+                            required
+                            error={
+                                values.submitted && errors.attempt !== undefined
+                            }
+                            helperText={errors.attempt}
+                            onChange={handleChange}
+                        />
+                        <TextField
+                            variant="outlined"
+                            margin="normal"
                             value={values.email}
                             fullWidth
                             name="email"
@@ -179,6 +214,16 @@ const Homepage: React.FC = () => {
                             helperText={errors.email}
                             onChange={handleChange}
                         />
+                        <div className={classes.mapWrapper}>
+                            <Typography paragraph={true} variant="h6">
+                                Start je vidět na obrázku níže.
+                            </Typography>
+                            <img
+                                className={classes.mapStart}
+                                src="/maps/start.png"
+                                alt="Mapa - start"
+                            />
+                        </div>
                         <Button
                             className={classes.submitBtn}
                             type="submit"

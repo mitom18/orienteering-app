@@ -3,6 +3,7 @@ import { LocalStorageKeys } from "../utils";
 export interface User {
     name: string;
     age: number;
+    attempt: number;
     email: string;
 }
 
